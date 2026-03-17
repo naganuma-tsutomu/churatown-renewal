@@ -17,8 +17,9 @@ interface Shop {
 
 // サーバーサイドでのデータ取得
 async function getShops(category?: string) {
-  // Dockerネットワーク内では backend:8080 を使用
-  const apiBaseUrl = process.env.INTERNAL_API_URL || "http://backend:8080";
+  // Docker内での実行時は環境変数 INTERNAL_API_URL (http://backend:8080) を優先
+  const apiBaseUrl = process.env.INTERNAL_API_URL || "http://localhost:8080";
+
   let url = `${apiBaseUrl}/api/shops`;
   if (category) {
     url += `?category=${encodeURIComponent(category)}`;
