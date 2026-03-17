@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import Link from "next/link";
 
-export default function LoginPage() {
+function LoginContent() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -22,6 +22,7 @@ export default function LoginPage() {
   }, [searchParams]);
 
   const handleSubmit = async (e: React.FormEvent) => {
+
     e.preventDefault();
     setLoading(true);
     setError("");
@@ -121,3 +122,12 @@ export default function LoginPage() {
     </div>
   );
 }
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-slate-50 flex justify-center items-center">Loading...</div>}>
+      <LoginContent />
+    </Suspense>
+  );
+}
+
