@@ -11,6 +11,7 @@ interface Shop {
   phone: string;
   category: string;
   attributes: string;
+  image_url?: string;
 }
 
 interface News {
@@ -131,6 +132,11 @@ export default function ShopDetail() {
         </div>
         
         <aside className="space-y-8">
+          {shop.image_url && (
+            <div className="rounded-3xl overflow-hidden shadow-2xl border-4 border-white mb-8">
+              <img src={shop.image_url} alt={shop.name} className="w-full h-auto" />
+            </div>
+          )}
           <div className="bg-blue-600 rounded-3xl p-8 text-white shadow-xl shadow-blue-200">
             <Link href="/news/new" className="block w-full bg-white text-blue-600 text-center py-4 rounded-2xl font-black hover:bg-cyan-50 transition-colors shadow-lg">
               ニュースを投稿する

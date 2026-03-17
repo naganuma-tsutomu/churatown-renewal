@@ -1,14 +1,25 @@
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(100) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    role VARCHAR(20) NOT NULL CHECK (role IN ('admin', 'owner')),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE TABLE shops (
     id SERIAL PRIMARY KEY,
+    owner_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
     name VARCHAR(255) NOT NULL,
     address VARCHAR(255),
     phone VARCHAR(50),
     category VARCHAR(50),
     attributes JSONB,
+    image_url VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE INDEX idx_shops_attributes ON shops USING GIN (attributes);
+CREATE INDEX idx_shops_owner_id ON shops(owner_id);
 
 CREATE TABLE shop_news (
     id SERIAL PRIMARY KEY,

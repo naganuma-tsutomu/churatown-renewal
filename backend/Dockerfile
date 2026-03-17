@@ -1,17 +1,16 @@
-FROM golang:1.25-alpine
+FROM golang:1.24-alpine
 
 WORKDIR /app
 
-COPY main.go ./
+# ファイルをコピー
+COPY go.mod main.go ./
 
-RUN go mod init backend && \
-    go get github.com/gin-contrib/cors@v1.5.0 \
-           github.com/gin-gonic/gin@v1.9.1 \
-           github.com/lib/pq@v1.10.9 \
-           github.com/minio/minio-go/v7 && \
-    go mod tidy
-
-RUN go build -o main .
+# 依存関係の解決とビルド
+RUN go mod edit -require github.com/minio/minio-go/v7@v7.0.80 && \
+    go mod edit -require github.com/golang-jwt/jwt/v5@v5.0.0 && \
+    go mod edit -require golang.org/x/crypto@v0.14.0 && \
+    go mod tidy && \
+    go build -o main .
 
 EXPOSE 8080
 
