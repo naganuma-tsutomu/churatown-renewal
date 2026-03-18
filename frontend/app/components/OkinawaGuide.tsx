@@ -2,14 +2,14 @@ import Link from "next/link";
 import Image from "next/image";
 
 const GUIDE_ITEMS = [
-  { title: "観光地", image: "/images/guide/sightseeing.jpg" },
-  { title: "ビーチ", image: "/images/guide/beach.jpg" },
-  { title: "イベント", image: "/images/guide/event.jpg" },
-  { title: "旅シミュレーター", image: "/images/guide/simulator.jpg" },
-  { title: "歴史・伝統・文化", image: "/images/guide/history.jpg" },
-  { title: "うちなー図鑑", image: "/images/guide/zukan.jpg" },
-  { title: "交通アクセス", image: "/images/guide/access.jpg" },
-  { title: "初めてガイド", image: "/images/guide/guide.jpg" },
+  { title: "観光地", slug: "sightseeing", image: "/images/guide/sightseeing.jpg" },
+  { title: "ビーチ", slug: "beach", image: "/images/guide/beach.jpg" },
+  { title: "イベント", slug: "event", image: "/images/guide/event.jpg" },
+  { title: "旅シミュレーター", slug: "travel-simulator", image: "/images/guide/simulator.jpg" },
+  { title: "歴史・伝統・文化", slug: "history-culture", image: "/images/guide/history.jpg" },
+  { title: "うちなー図鑑", slug: "uchina-zukan", image: "/images/guide/zukan.jpg" },
+  { title: "交通アクセス", slug: "access", image: "/images/guide/access.jpg" },
+  { title: "初めてガイド", slug: "beginners-guide", image: "/images/guide/guide.jpg" },
 ];
 
 export function OkinawaGuide() {
@@ -24,7 +24,7 @@ export function OkinawaGuide() {
         {GUIDE_ITEMS.map((item) => (
           <Link
             key={item.title}
-            href={`/guide/${encodeURIComponent(item.title)}`}
+            href={`/guide/${item.slug}`}
             className="group flex flex-col items-center"
           >
             <div className="relative w-32 h-32 md:w-40 md:h-40 mb-4 overflow-hidden rounded-full shadow-lg group-hover:shadow-2xl transition-all duration-500 group-hover:scale-105 border-4 border-white">
