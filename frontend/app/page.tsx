@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { Header } from "./components/Header";
 import { GenreList } from "./components/GenreList";
+import { OkinawaGuide } from "./components/OkinawaGuide";
 import { SearchBar } from "./components/SearchBar";
 import { ShopCard } from "./components/ShopCard";
 
@@ -48,6 +49,7 @@ export default async function Home({
       <Header />
 
       <main className="max-w-6xl mx-auto px-4 py-10">
+        <OkinawaGuide />
         <GenreList />
 
         <Suspense fallback={<div className="h-40 bg-slate-100 animate-pulse rounded-3xl mb-16" />}>
