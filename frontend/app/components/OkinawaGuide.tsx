@@ -32,6 +32,7 @@ export function OkinawaGuide() {
                 src={item.image}
                 alt={item.title}
                 fill
+                sizes="(max-width: 768px) 128px, 160px"
                 className="object-cover transition-transform duration-700 group-hover:scale-110"
               />
             </div>

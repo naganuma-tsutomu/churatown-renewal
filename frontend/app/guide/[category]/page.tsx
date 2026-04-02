@@ -2,8 +2,24 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-// 全カテゴリのデータ
-const GUIDE_CONTENT: { [key: string]: any } = {
+interface GuideItem {
+  title: string;
+  category: string;
+  image: string;
+  description: string;
+}
+
+interface GuideContent {
+  title: string;
+  englishTitle: string;
+  subtitle: string;
+  description: string;
+  heroImage: string;
+  color: string;
+  items: GuideItem[];
+}
+
+const GUIDE_CONTENT: Record<string, GuideContent> = {
   sightseeing: {
     title: "観光地",
     englishTitle: "SIGHTSEEING",
@@ -103,6 +119,10 @@ const GUIDE_CONTENT: { [key: string]: any } = {
   }
 };
 
+export function generateStaticParams() {
+  return Object.keys(GUIDE_CONTENT).map((category) => ({ category }));
+}
+
 export default async function GuidePage({ params }: { params: Promise<{ category: string }> }) {
   const { category } = await params;
   const content = GUIDE_CONTENT[category];
@@ -111,7 +131,6 @@ export default async function GuidePage({ params }: { params: Promise<{ category
     notFound();
   }
 
-  // 他のカテゴリへのナビゲーション用
   const otherCategories = Object.keys(GUIDE_CONTENT)
     .filter(key => key !== category)
     .map(key => ({
@@ -121,12 +140,12 @@ export default async function GuidePage({ params }: { params: Promise<{ category
 
   return (
     <div className="min-h-screen bg-slate-50">
-      {/* ヒーローセクション */}
       <div className="relative h-[400px] md:h-[500px] flex items-center justify-center overflow-hidden">
         <Image
           src={content.heroImage}
           alt={content.title}
           fill
+          sizes="100vw"
           className="object-cover"
           priority
         />
@@ -145,24 +164,22 @@ export default async function GuidePage({ params }: { params: Promise<{ category
         </div>
       </div>
 
-      {/* 紹介テキスト */}
       <div className="max-w-4xl mx-auto px-4 -mt-12 relative z-10 mb-16">
-        <div className="bg-white rounded-3xl shadow-xl p-8 md:p-12 border border-slate-100 backdrop-blur-sm bg-white/95">
+        <div className="bg-white/95 rounded-3xl shadow-xl p-8 md:p-12 border border-slate-100 backdrop-blur-sm">
           <p className="text-slate-600 leading-relaxed text-base md:text-lg">
             {content.description}
           </p>
         </div>
       </div>
 
-      {/* アイテムリスト */}
       <div className="max-w-6xl mx-auto px-4 mb-24">
         <h2 className="text-2xl md:text-3xl font-black text-slate-800 text-center mb-12">
           おすすめコンテンツ
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {content.items.map((item: any, index: number) => (
+          {content.items.map((item) => (
             <div
-              key={index}
+              key={item.title}
               className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 group flex flex-col h-full border border-slate-100 hover:-translate-y-2"
             >
               <div className="relative h-60 overflow-hidden">
@@ -170,6 +187,7 @@ export default async function GuidePage({ params }: { params: Promise<{ category
                   src={item.image}
                   alt={item.title}
                   fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   className="object-cover group-hover:scale-110 transition-transform duration-700"
                 />
                 <div className={`absolute top-4 left-4 bg-gradient-to-r ${content.color} text-white text-xs font-bold px-4 py-2 rounded-full shadow-md`}>
@@ -199,7 +217,6 @@ export default async function GuidePage({ params }: { params: Promise<{ category
         </div>
       </div>
 
-      {/* 他のカテゴリへのナビゲーション */}
       <div className="bg-slate-100/80 py-20">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h2 className="text-2xl font-bold text-slate-800 mb-8 flex items-center justify-center gap-2">
