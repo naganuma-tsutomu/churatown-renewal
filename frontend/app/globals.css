@@ -3,14 +3,37 @@
 @theme {
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  --color-ocean-50: #f0fdfa;
+  --color-ocean-100: #ccfbf1;
+  --color-ocean-200: #99f6e4;
+  --color-ocean-300: #5eead4;
+  --color-ocean-400: #2dd4bf;
+  --color-ocean-500: #14b8a6;
+  --color-ocean-600: #0d9488;
+
+  --color-coral-50: #fff7ed;
+  --color-coral-100: #ffedd5;
+  --color-coral-200: #fed7aa;
+  --color-coral-300: #fdba74;
+  --color-coral-400: #fb923c;
+  --color-coral-500: #f97316;
+
+  --color-sand-50: #fefce8;
+  --color-sand-100: #fef9c3;
+  --color-sand-200: #fef08a;
 }
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #fafbfc;
+  --foreground: #1e293b;
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
+}
+
+html {
+  scroll-behavior: smooth;
 }
