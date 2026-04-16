@@ -45,7 +45,7 @@ export default async function Home({
     <div className="min-h-screen bg-[#fafbfc] text-slate-800 font-sans">
       <Header />
 
-      <Suspense fallback={<div className="h-[85vh] bg-slate-200 animate-pulse" />}>
+      <Suspense fallback={<div className="h-screen bg-slate-100 animate-pulse" />}>
         <HeroSection />
       </Suspense>
 

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { Search } from "lucide-react";
+import Image from "next/image";
 
 export function HeroSection() {
   const router = useRouter();
@@ -20,7 +21,7 @@ export function HeroSection() {
   };
 
   return (
-    <section className="relative h-[85vh] min-h-[600px] flex items-center justify-center overflow-hidden">
+    <section className="relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden">
       {/* Background image */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
@@ -34,45 +35,43 @@ export function HeroSection() {
 
       {/* Content */}
       <div className="relative z-10 text-center px-4 max-w-3xl mx-auto">
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-white/80 text-sm tracking-[0.3em] uppercase mb-4"
-        >
-          Okinawa Local Portal
-        </motion.p>
-        <motion.h2
+        <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.1 }}
-          className="text-5xl md:text-7xl font-extrabold text-white mb-6 leading-tight"
+          transition={{ duration: 0.8 }}
+          className="text-3xl md:text-5xl font-extrabold text-white mb-8 leading-tight tracking-wide font-serif drop-shadow-lg"
         >
-          沖縄の魅力を
-          <br />
-          まるごと発見
-        </motion.h2>
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="text-white/70 text-lg mb-10"
+          『欲しい』がここにある。
+        </motion.h1>
+
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.7, delay: 0.3 }}
+          className="mb-12"
         >
-          観光・グルメ・暮らしの情報をひとつに
-        </motion.p>
+          <Image
+            src="/images/logo.png"
+            alt="美らタウン沖縄"
+            width={360}
+            height={100}
+            className="h-24 w-auto mx-auto brightness-0 invert"
+            priority
+          />
+        </motion.div>
 
         {/* Search bar */}
         <motion.form
           onSubmit={handleSearch}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.5 }}
-          className="flex gap-3 max-w-xl mx-auto bg-white/15 backdrop-blur-xl rounded-2xl p-2 border border-white/20"
+          transition={{ duration: 0.6, delay: 0.55 }}
+          className="flex gap-3 max-w-xl mx-auto bg-white rounded-2xl p-2 border border-slate-200 shadow-md"
         >
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="flex-1 px-4 py-3 bg-transparent text-white rounded-xl focus:outline-none appearance-none [&>option]:text-slate-800"
+            className="flex-1 px-4 py-3 bg-transparent text-slate-700 rounded-xl focus:outline-none appearance-none"
           >
             <option value="">すべてのカテゴリ</option>
             <option value="グルメ">グルメ</option>

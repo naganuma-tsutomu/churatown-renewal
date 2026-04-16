@@ -1,0 +1,96 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'frontend/**'
+      - 'backend/**'
+      - '.github/workflows/deploy.yml'
+
+env:
+  REGISTRY: ghcr.io
+  FRONTEND_IMAGE: ghcr.io/${{ github.repository_owner }}/churatown-frontend
+  BACKEND_IMAGE: ghcr.io/${{ github.repository_owner }}/churatown-backend
+
+jobs:
+  # ========================================
+  # Frontend のビルド & プッシュ
+  # ========================================
+  build-frontend:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and Push Frontend
+        uses: docker/build-push-action@v5
+        with:
+          context: ./frontend
+          file: ./frontend/Dockerfile
+          push: true
+          tags: |
+            ${{ env.FRONTEND_IMAGE }}:${{ github.sha }}
+            ${{ env.FRONTEND_IMAGE }}:latest
+
+  # ========================================
+  # Backend のビルド & プッシュ
+  # ========================================
+  build-backend:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and Push Backend
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend
+          file: ./backend/Dockerfile
+          push: true
+          tags: |
+            ${{ env.BACKEND_IMAGE }}:${{ github.sha }}
+            ${{ env.BACKEND_IMAGE }}:latest
+
+  # ========================================
+  # proxmox-iac-project へデプロイ通知
+  # ========================================
+  deploy:
+    needs: [build-frontend, build-backend]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Trigger Deploy
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.DEPLOY_PAT }}
+          repository: naganuma-tsutomu/proxmox-iac-project
+          event-type: deploy-churatown
+          client-payload: |
+            {
+              "image_tag": "${{ github.sha }}",
+              "frontend_image": "${{ env.FRONTEND_IMAGE }}",
+              "backend_image": "${{ env.BACKEND_IMAGE }}"
+            }
